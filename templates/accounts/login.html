@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="board-wrap">
+  <h1 class="board-title">로그인</h1>
+
+  <form method="POST" class="form-card" action="{% url 'accounts:login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div class="board-actions">
+      <button type="submit">로그인</button>
+      <a href="{% url 'accounts:signup' %}">회원가입</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

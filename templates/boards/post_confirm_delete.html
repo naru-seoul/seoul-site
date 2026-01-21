@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="board-wrap">
+
+  <h1 class="board-title">게시글 삭제</h1>
+
+  <div class="form-card">
+    <p style="margin-bottom:16px;">
+      정말로 아래 게시글을 <strong>삭제</strong>하시겠습니까?
+    </p>
+
+    <div style="margin-bottom:20px;">
+      <strong>{{ post.title }}</strong>
+      <div class="board-meta">
+        {{ post.author }} · {{ post.created_at }}
+      </div>
+    </div>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="board-actions">
+        <button type="submit" style="color:#c00;">삭제</button>
+        <a href="{% url 'boards:detail' post.pk %}">취소</a>
+      </div>
+    </form>
+  </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}SEOUL{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/서울.css' %}" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <h1 class="logo"><a href="/">LOGO</a></h1>
+
+        <nav class="main-nav" aria-label="메인 메뉴">
+          <ul>
+            <li><a href="{% url 'boards:list' %}">게시판</a></li>
+            <li><a href="#">맛집</a></li>
+            <li><a href="#">관광지</a></li>
+            <li><a href="#">이벤트</a></li>
+            <li><a href="#">전시</a></li>
+          </ul>
+        </nav>
+
+        <div class="user-nav" aria-label="회원 메뉴">
+          {% if request.user.is_authenticated %}
+          <span style="font-size: 14px; color: #333">
+            {{ request.user.username }} 님
+          </span>
+
+          <form
+            method="POST"
+            action="{% url 'accounts:logout' %}"
+            style="display: inline"
+          >
+            {% csrf_token %}
+            <button type="submit" class="login">로그아웃</button>
+          </form>
+          {% else %}
+          <a href="{% url 'accounts:login' %}" class="login">로그인</a>
+          <a href="{% url 'accounts:signup' %}" class="signup">회원가입</a>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <!-- content will be added later -->
+      </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

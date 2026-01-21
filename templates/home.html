@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}SEOUL{% endblock %}
+
+{% block content %}
+  <section class="hero" aria-label="메인 배너">
+    <div class="hero-media" id="heroMedia">
+      <div class="hero-content">
+        <h2>특별한 순간을 완성하는</h2>
+        <p>Curated Experience</p>
+      </div>
+
+      <div class="hero-dots" id="heroDots" aria-label="배너 선택"></div>
+    </div>
+  </section>
+
+  <section style="max-width: 1100px; margin: 40px auto; padding: 0 16px">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      "
+    >
+      <h2 style="margin: 0">최신 게시글</h2>
+      <a href="/boards/" style="text-decoration: none">게시판 더보기 →</a>
+    </div>
+
+    <div style="margin-top: 16px">
+      {% if latest_posts %}
+        <ul
+          style="
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          "
+        >
+          {% for post in latest_posts %}
+            <li
+              style="
+                padding: 12px 14px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+              "
+            >
+              <a
+                href="{% url 'boards:detail' post.pk %}"
+                style="text-decoration: none; font-weight: 600"
+              >
+                {{ post.title }}
+              </a>
+              <div style="font-size: 12px; opacity: 0.7; margin-top: 6px">
+                조회수 {{ post.views }} · {{ post.created_at }}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p style="opacity: 0.7">
+          아직 게시글이 없습니다. 게시판에서 글을 작성해보세요.
+        </p>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    /* ===== Hero Slider ===== */
+    const slides = [
+      "{% static 'img/hero1.jpg' %}",
+      "{% static 'img/hero2.jpg' %}",
+      "{% static 'img/hero3.jpg' %}",
+    ];
+
+    const heroMedia = document.getElementById("heroMedia");
+    const dotsWrap = document.getElementById("heroDots");
+
+    let current = 0;
+    let timer = null;
+    const intervalMs = 4000;
+
+    function setActiveDot() {
+      dotsWrap
+        .querySelectorAll(".hero-dot")
+        .forEach((d, i) => d.classList.toggle("is-active", i === current));
+    }
+
+    function renderSlide() {
+      heroMedia.style.backgroundImage = `url('${slides[current]}')`;
+      setActiveDot();
+    }
+
+    function next() {
+      current = (current + 1) % slides.length;
+      renderSlide();
+    }
+
+    function startAuto() {
+      stopAuto();
+      timer = setInterval(next, intervalMs);
+    }
+
+    function stopAuto() {
+      if (timer) clearInterval(timer);
+    }
+
+    function buildDots() {
+      dotsWrap.innerHTML = "";
+      slides.forEach((_, i) => {
+        const btn = document.createElement("button");
+        btn.className = "hero-dot";
+        btn.addEventListener("click", () => {
+          current = i;
+          renderSlide();
+          startAuto();
+        });
+        dotsWrap.appendChild(btn);
+      });
+    }
+
+    heroMedia.addEventListener("mouseenter", stopAuto);
+    heroMedia.addEventListener("mouseleave", startAuto);
+
+    buildDots();
+    renderSlide();
+    startAuto();
+
+    /* ===== Header Scroll ===== */
+    const header = document.querySelector(".site-header");
+
+    window.addEventListener("scroll", () => {
+      header.classList.toggle("is-scrolled", window.scrollY > 40);
+    });
+  </script>
+{% endblock %}

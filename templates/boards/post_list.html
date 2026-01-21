@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="board-wrap">
+
+  <div class="board-top">
+    <h1 class="board-title">게시판</h1>
+
+    {% if request.user.is_authenticated %}
+      <a class="btn-primary" href="{% url 'boards:create' %}">글쓰기</a>
+    {% else %}
+      <a class="btn-primary" href="{% url 'accounts:login' %}">로그인 후 글쓰기</a>
+    {% endif %}
+  </div>
+
+  <ul class="post-list">
+    {% for post in posts %}
+      <li class="post-item">
+        <a class="post-link" href="{% url 'boards:detail' post.pk %}">
+          {{ post.title }}
+        </a>
+
+        <div class="board-meta">
+          {{ post.author }} · {{ post.created_at }} · 조회수 {{ post.views }}
+        </div>
+
+        <div class="board-meta">
+          ❤️ {{ post.likes.count }} · 💬 {{ post.comments.count }}
+        </div>
+      </li>
+    {% empty %}
+      <p style="opacity:.7;">게시글이 없습니다.</p>
+    {% endfor %}
+  </ul>
+
+</section>
+{% endblock %}

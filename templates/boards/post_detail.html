@@ -1,0 +1,85 @@
+{% extends "base.html" %} {% block content %}
+<section class="board-wrap">
+  <h1 class="board-title">{{ post.title }}</h1>
+
+  <div class="board-meta">작성자 {{ post.author }} · {{ post.created_at }}</div>
+
+  <div class="board-content">{{ post.content }}</div>
+
+  <div class="board-meta">조회수 {{ post.views }}</div>
+
+  <div style="margin-bottom: 14px">
+    <a class="btn-primary" href="{% url 'boards:list' %}">목록</a>
+  </div>
+
+  <div class="board-actions">
+    <form method="POST" action="{% url 'boards:like_toggle' post.pk %}">
+      {% csrf_token %}
+      <button type="submit">❤️ {{ post.likes.count }}</button>
+    </form>
+
+    {% if request.user == post.author %}
+    <a href="{% url 'boards:update' post.pk %}">수정</a>
+
+    <form
+      method="POST"
+      action="{% url 'boards:delete' post.pk %}"
+      style="display: inline"
+    >
+      {% csrf_token %}
+      <button type="submit" onclick="return confirm('삭제할까요?');">
+        삭제
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
+  <hr style="margin: 40px 0" />
+
+  <!-- ✅ 댓글 섹션 시작 -->
+  <section class="comment-section">
+    <h3>댓글 {{ post.comments.count }}</h3>
+
+    {% for comment in post.comments.all %}
+    <div class="comment-item">
+      <span class="comment-author">{{ comment.author }}</span>
+      <span class="comment-content">{{ comment.content }}</span>
+
+      {% if request.user == comment.author %}
+      <div style="margin-top: 6px">
+        <a href="{% url 'boards:comment_update' post.pk comment.pk %}">수정</a>
+
+        <form
+          method="POST"
+          action="{% url 'boards:comment_delete' post.pk comment.pk %}"
+          style="display: inline"
+        >
+          {% csrf_token %}
+          <button type="submit" onclick="return confirm('댓글 삭제할까요?');">
+            삭제
+          </button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+
+    {% empty %}
+    <p style="opacity: 0.7">댓글 없음</p>
+    {% endfor %}
+
+    <div class="comment-form">
+      {% if request.user.is_authenticated %}
+      <form method="POST" action="{% url 'boards:comment_create' post.pk %}">
+        {% csrf_token %} {{ comment_form.as_p }}
+        <button type="submit">댓글 작성</button>
+      </form>
+      {% else %}
+      <p style="opacity: 0.7">
+        댓글을 작성하려면 <a href="{% url 'accounts:login' %}">로그인</a>하세요.
+      </p>
+      {% endif %}
+    </div>
+  </section>
+  <!-- ✅ 댓글 섹션 끝 -->
+</section>
+{% endblock %}

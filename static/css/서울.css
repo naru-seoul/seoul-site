@@ -1,0 +1,349 @@
+/* ===== 기본 리셋 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+/* ===== Header (Fixed, No overlap) ===== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  /* ✅ 비침/겹침 느낌 확실히 제거: 완전 불투명 */
+  background: #fff;
+  backdrop-filter: none;
+}
+
+.site-header.is-scrolled {
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 80px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 로고 */
+.logo a {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  text-decoration: none;
+}
+
+/* 메인 네비 */
+.main-nav ul {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.main-nav a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* 유저 영역 */
+.user-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 34px;
+  padding: 0 12px;
+
+  font-size: 14px;
+  line-height: 1;
+  color: #333;
+  text-decoration: none;
+}
+
+.user-nav .signup {
+  border: 1px solid #ffb3c7;
+  border-radius: 999px;
+  color: #ff6f91;
+}
+
+/* ✅ 헤더가 fixed이므로 본문은 헤더 높이만큼 내려줌 */
+main {
+  padding-top: 80px; /* header-inner height */
+}
+
+/* ===== Hero ===== */
+.hero {
+  min-height: 100vh;
+  padding-top: 0;
+
+  display: flex;
+  align-items: stretch;
+
+  background: linear-gradient(135deg, #fde2e4, #e2f0ff, #e8fdf5);
+}
+
+.hero-media {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  /* ✅ main이 이미 80px 내려줬으니 여기선 풀 높이 */
+  min-height: 100vh;
+  position: relative;
+
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  transition: background-image 0.8s ease-in-out;
+}
+
+/* 오버레이 */
+.hero-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 히어로 텍스트 */
+.hero-content {
+  position: relative;
+  z-index: 2;
+
+  height: 100%;
+  min-height: inherit;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  color: #fff;
+}
+
+.hero-content h2 {
+  font-size: 52px;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.hero-content p {
+  font-size: 20px;
+  opacity: 0.9;
+}
+
+/* ===== 점 인디케이터 ===== */
+.hero-dots {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 10px;
+}
+
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+}
+
+.hero-dot.is-active {
+  background: #ff6f91;
+  transform: scale(1.3);
+}
+
+/* ===== Footer (Soft Pastel Dark) ===== */
+.site-footer {
+  width: 100%;
+  background: rgba(245, 246, 248, 1);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.footer-inner {
+  max-width: 1400px;
+  height: 260px;
+  margin: 0 auto;
+}
+
+/* ===== 기본 버튼 ===== */
+button {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f5f5f5;
+}
+
+/* ==============================
+   게시판 (Board)
+   ============================== */
+.board-wrap {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+.board-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.board-meta {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.board-content {
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.board-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.comment-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.comment-form {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+}
+
+/* ===== Board List UI ===== */
+.board-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  color: #333;
+}
+
+.btn-primary:hover {
+  background: #f5f5f5;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.post-item {
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.post-link {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 800;
+  color: #111;
+}
+
+.post-link:hover {
+  text-decoration: underline;
+}
+/* ===== Form UI ===== */
+.form-card {
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.form-card p {
+  margin-bottom: 12px;
+}
+
+.form-card label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.form-card textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+.form-card .helptext {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-top: 6px;
+}
